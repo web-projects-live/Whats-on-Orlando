@@ -1,0 +1,35 @@
+name: Nightly event scrape
+
+on:
+  schedule:
+    # 09:00 UTC = 4-5 AM US Eastern, depending on DST
+    - cron: "0 9 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Playwright browser
+        run: playwright install --with-deps chromium
+
+      - name: Run scrapers
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+          FACEBOOK_COOKIE: ${{ secrets.FACEBOOK_COOKIE }}
+          STARTGG_API_KEY: ${{ secrets.STARTGG_API_KEY }}
+          SONGKICK_API_KEY: ${{ secrets.SONGKICK_API_KEY }}
+        run: python -m scraper.main

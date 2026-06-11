@@ -1,0 +1,515 @@
+# ============================================================================
+# Source registry for the Central Florida events aggregator.
+#
+# Each entry is synced into the `sources` table on every run
+# (scraper/db.py:sync_sources) and dispatched to the matching class in
+# scraper/sources/SCRAPER_REGISTRY based on `scraper:`.
+#
+# Adding a new source usually does NOT require new code:
+#   - `scraper: tribe_events` works for any site running the WordPress
+#     "The Events Calendar" plugin - just set `base_url`.
+#   - `scraper: ics_calendar` works for any public .ics feed - set
+#     `config.ics_url`.
+#   - `scraper: playwright_html` works for any site via CSS selectors -
+#     set `config.list_url` + `config.item_selector` etc.
+#   - `scraper: ticketmaster` is a single corridor-wide source (see
+#     config/geo.yaml for search centers); no per-venue entries needed.
+#   - `scraper: facebook_events` is selective/best-effort - see
+#     scraper/sources/facebook_events.py.
+#
+# `is_active: false` sources are skipped entirely (not even synced... -
+# actually they ARE synced to `sources` for bookkeeping, just not run).
+#
+# `allow_empty: true` suppresses the "0 events" diagnostic for sources
+# that may legitimately have nothing upcoming sometimes.
+#
+# IMPORTANT: This sandbox has no outbound network access, so none of
+# these have been live-verified. Run `python -m scraper.main` once
+# (e.g. via the GitHub Action, which does have network access) and
+# check the "ACTION NEEDED" section of its output - it tells you
+# exactly which sources need a different `scraper` type or updated
+# selectors/URLs.
+# ============================================================================
+
+sources:
+  # --------------------------------------------------------------------
+  # Tier 1: Aggregator API - covers most arenas/amphitheaters/clubs
+  # across the whole corridor (Kia Center, Addition Financial Arena,
+  # Daytona International Speedway, House of Blues Orlando, The
+  # Beacham, Hard Rock Live, etc.) via geo-radius search.
+  # --------------------------------------------------------------------
+  - slug: ticketmaster-central-florida
+    name: "Ticketmaster - Central Florida Corridor"
+    source_type: api
+    scraper: ticketmaster
+    homepage_url: "https://www.ticketmaster.com"
+    default_category: music
+    is_active: true
+    notes: >
+      Requires TICKETMASTER_API_KEY (free, https://developer.ticketmaster.com/).
+      Searches the radii defined in config/geo.yaml search_centers, covering
+      Orlando metro + Daytona/St. Augustine. Already covers Ticketmaster/Live
+      Nation-ticketed venues, so dedicated scrapers below focus on
+      independent venues, theaters, museums, and family/festival sources.
+
+  # --------------------------------------------------------------------
+  # Tier 2: Independent music venues / arts orgs - "The Events Calendar"
+  # WordPress plugin REST API (scraper: tribe_events). One entry per
+  # site, zero custom code. Sources that 404 here will show up as
+  # `not_found` in the run summary - switch `scraper` to
+  # `playwright_html` or `ics_calendar` for those.
+  # --------------------------------------------------------------------
+  - slug: wills-pub
+    name: "Will's Pub"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://willspub.org"
+    homepage_url: "https://willspub.org"
+    default_category: music
+    config:
+      default_tags: [indie, local]
+
+  - slug: the-abbey-orlando
+    name: "The Abbey"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://theabbeyorlando.com"
+    homepage_url: "https://theabbeyorlando.com"
+    default_category: music
+    config:
+      default_tags: [indie, local]
+
+  - slug: conduit-fl
+    name: "Conduit"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://conduitfl.com"
+    homepage_url: "https://conduitfl.com"
+    default_category: nightlife_edm
+    config:
+      default_tags: [edm]
+
+  - slug: orlando-shakes
+    name: "Orlando Shakespeare Theater"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://orlandoshakes.org"
+    homepage_url: "https://orlandoshakes.org"
+    default_category: theater
+
+  - slug: garden-theatre
+    name: "Garden Theatre (Winter Garden)"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://gardentheatre.org"
+    homepage_url: "https://gardentheatre.org"
+    default_category: theater
+
+  - slug: orlando-rep
+    name: "Orlando Repertory Theatre"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://orlandorep.com"
+    homepage_url: "https://orlandorep.com"
+    default_category: theater
+    config:
+      default_tags: [kids_friendly, family_friendly]
+
+  - slug: mad-cow-theatre
+    name: "Mad Cow Theatre"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://madcowtheatre.com"
+    homepage_url: "https://madcowtheatre.com"
+    default_category: theater
+
+  - slug: winter-park-playhouse
+    name: "Winter Park Playhouse"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://winterparkplayhouse.org"
+    homepage_url: "https://winterparkplayhouse.org"
+    default_category: theater
+
+  - slug: st-augustine-amphitheatre
+    name: "St. Augustine Amphitheatre"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://staugamphitheatre.com"
+    homepage_url: "https://staugamphitheatre.com"
+    default_category: music
+
+  - slug: orlando-fringe
+    name: "Orlando Fringe Festival"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://orlandofringe.org"
+    homepage_url: "https://orlandofringe.org"
+    default_category: festival
+    allow_empty: true # festival is seasonal - genuinely 0 most of the year
+    config:
+      default_tags: [theater]
+
+  - slug: enzian-theater
+    name: "Enzian Theater"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://enzian.org"
+    homepage_url: "https://enzian.org"
+    default_category: arts_culture
+    config:
+      default_tags: [film]
+
+  - slug: timucua-arts
+    name: "Timucua Arts Foundation"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://timucua.com"
+    homepage_url: "https://timucua.com"
+    default_category: music
+    config:
+      default_tags: [jazz, intimate]
+
+  - slug: plaza-live
+    name: "The Plaza Live Orlando"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://plazaliveorlando.org"
+    homepage_url: "https://plazaliveorlando.org"
+    default_category: music
+
+  - slug: orlando-science-center
+    name: "Orlando Science Center"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://www.osc.org"
+    homepage_url: "https://www.osc.org"
+    default_category: family
+    config:
+      default_tags: [kids_friendly, family_friendly]
+
+  - slug: central-florida-fair
+    name: "Central Florida Fairgrounds"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://www.centralfloridafair.com"
+    homepage_url: "https://www.centralfloridafair.com"
+    default_category: festival
+    allow_empty: true # the Fair itself runs ~2 weeks/year
+
+  # --------------------------------------------------------------------
+  # Tier 2b: Additional `tribe_events` candidates from the Jun 2026
+  # source-expansion request. These are likely-WordPress community/arts
+  # sites; if any 404 here (not running "The Events Calendar"), the run
+  # summary will mark them `not_found` - switch `scraper` to
+  # `playwright_html` for those instead.
+  # --------------------------------------------------------------------
+  - slug: bungalower
+    name: "Bungalower (Orlando community calendar)"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://bungalower.com"
+    homepage_url: "https://bungalower.com"
+    default_category: community
+    allow_empty: true
+
+  - slug: west-end-trading-company
+    name: "West End Trading Company (Sanford)"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://drinkatwestend.com"
+    homepage_url: "https://drinkatwestend.com/events/"
+    default_category: music
+    config:
+      city: Sanford
+      default_tags: [local]
+
+  - slug: my-central-florida-family
+    name: "My Central Florida Family"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://mycentralfloridafamily.com"
+    homepage_url: "https://mycentralfloridafamily.com"
+    default_category: family
+    config:
+      default_tags: [kids_friendly, family_friendly]
+
+  - slug: orlando-on-the-cheap
+    name: "Orlando On The Cheap"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://orlandoonthecheap.com"
+    homepage_url: "https://orlandoonthecheap.com"
+    default_category: community
+    config:
+      default_tags: [free]
+
+  - slug: florida-comic-cons
+    name: "Florida Comic Cons"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://floridacomiccons.com"
+    homepage_url: "https://floridacomiccons.com"
+    default_category: festival
+    allow_empty: true
+    config:
+      default_tags: [comic_con]
+
+  - slug: united-arts-cfl
+    name: "United Arts of Central Florida (ArtsInOrlando)"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://unitedartscfl.org"
+    homepage_url: "https://unitedartscfl.org"
+    default_category: arts_culture
+
+  - slug: creative-city-project
+    name: "Creative City Project"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://creativecityproject.com"
+    homepage_url: "https://creativecityproject.com"
+    default_category: arts_culture
+    allow_empty: true
+
+  # --------------------------------------------------------------------
+  # Tier 3: Major venues with no known JSON/ICS feed - headless-browser
+  # scraping with CSS selectors. SELECTORS ARE BEST-GUESS PLACEHOLDERS
+  # (sandbox has no internet access to verify). When this source shows
+  # `no_results` or `parse_error`, inspect the live page and fix the
+  # `config.*_selector` values below.
+  # --------------------------------------------------------------------
+  - slug: dr-phillips-center
+    name: "Dr. Phillips Center for the Performing Arts"
+    source_type: html
+    scraper: playwright_html
+    base_url: "https://www.drphillipscenter.org"
+    homepage_url: "https://www.drphillipscenter.org/events/"
+    default_category: theater
+    config:
+      list_url: "https://www.drphillipscenter.org/events/"
+      item_selector: "article"
+      title_selector: "h2, h3"
+      date_selector: "time, .date, .event-date"
+      link_selector: "a"
+      image_selector: "img"
+      venue_name: "Dr. Phillips Center for the Performing Arts"
+      city: "Orlando"
+      latitude: 28.5398
+      longitude: -81.3756
+      wait_ms: 3000
+
+  - slug: orlando-museum-of-art
+    name: "Orlando Museum of Art"
+    source_type: html
+    scraper: playwright_html
+    base_url: "https://omart.org"
+    homepage_url: "https://omart.org/exhibitions/"
+    default_category: arts_culture
+    config:
+      list_url: "https://omart.org/exhibitions/"
+      item_selector: "article"
+      title_selector: "h2, h3"
+      date_selector: "time, .date"
+      link_selector: "a"
+      image_selector: "img"
+      default_tags: [art_exhibit]
+      venue_name: "Orlando Museum of Art"
+      city: "Orlando"
+      latitude: 28.5729
+      longitude: -81.3712
+      wait_ms: 3000
+
+  # --------------------------------------------------------------------
+  # Tier 3b: Special-purpose scrapers added for the Jun 2026 expansion
+  # (esports/Smash tournaments, Pokemon GO live events, UCF's Localist
+  # calendar, and Songkick as a supplemental concert feed).
+  # --------------------------------------------------------------------
+  - slug: startgg-smash-corridor
+    name: "start.gg - Smash Bros. Melee & Ultimate (Central Florida)"
+    source_type: api
+    scraper: start_gg
+    homepage_url: "https://www.start.gg"
+    default_category: gaming
+    config:
+      video_game_ids: [1, 1386] # Melee, Ultimate
+      lookahead_days: 60
+    notes: >
+      Requires STARTGG_API_KEY (free, https://developer.start.gg/docs/authentication).
+      Searches the same geo.yaml search_centers as Ticketmaster.
+
+  - slug: pokemon-go-events
+    name: "Pokemon GO Live Events (ScrapedDuck feed)"
+    source_type: api
+    scraper: json_feed
+    homepage_url: "https://leekduck.com/events/"
+    default_category: gaming
+    allow_empty: true # global feed - may have no upcoming entries briefly between events
+    config:
+      json_url: "https://raw.githubusercontent.com/bigfoott/ScrapedDuck/data/events.json"
+      default_tags: [pokemon_go]
+      venue_name: "Pokemon GO (community-wide)"
+      city: Orlando
+    notes: >
+      Global event feed (Community Days, raid hours, season events) - relevant
+      to local players everywhere, not tied to a specific venue. No API key
+      required.
+
+  - slug: ucf-events
+    name: "UCF Events (Localist)"
+    source_type: api
+    scraper: localist
+    base_url: "https://events.ucf.edu"
+    homepage_url: "https://events.ucf.edu"
+    default_category: community
+    config:
+      city: Orlando
+      default_tags: [ucf]
+
+  - slug: songkick-orlando
+    name: "Songkick - Orlando Metro (supplemental concerts)"
+    source_type: api
+    scraper: songkick
+    homepage_url: "https://www.songkick.com"
+    default_category: music
+    config:
+      metro_area_query: "Orlando, FL"
+    notes: >
+      Requires SONGKICK_API_KEY (free, https://www.songkick.com/api_key_requests/new).
+      Supplements Ticketmaster with venues/promoters that report to Songkick
+      but aren't TM-ticketed.
+
+  # --------------------------------------------------------------------
+  # Known gaps / future work (documented, not yet implemented):
+  #
+  #  - Universal Orlando seasonal/special events (Halloween Horror
+  #    Nights, Mardi Gras, Star Wars-type tie-ins): the events pages are
+  #    Next.js SPAs that hydrate from a __NEXT_DATA__ JSON blob rather
+  #    than static HTML, so they need a small bespoke scraper that
+  #    extracts that JSON via Playwright rather than CSS selectors.
+  #
+  #  - Resident Advisor (ra.co) for EDM/rave listings: ra.co/graphql is
+  #    queryable without an API key but has active bot-detection
+  #    (Cloudflare). Worth a dedicated `ra_co` scraper later with
+  #    careful rate limiting + realistic headers.
+  #
+  #  - AXS-only venues (no public API; would need headless scraping of
+  #    axs.com venue pages or a paid scraper API).
+  #
+  #  - Eventbrite (organizer/category feeds for Orlando: master, this
+  #    week, live music, EDM, arts, kids/free), SeatGeek, CheapTickets,
+  #    StayHappening, AllEvents.in, EDMTrain, JamBase, Bandsintown,
+  #    Shazam event feeds, Trip.com, Tix4Cause, TicketSqueeze: none of
+  #    these expose a stable, key-free public API for arbitrary metro
+  #    searches. Eventbrite's public search API was deprecated; the
+  #    others either require paid/partner API access or change their
+  #    HTML/JSON shape often enough that a scraper would need constant
+  #    maintenance. Revisit if/when a maintained `playwright_html`
+  #    config proves stable for one of these.
+  #
+  #  - Tourism-board / city / .gov calendars that are NOT WordPress
+  #    (Visit Orlando, Visit Florida, Orlando Date Night Guide,
+  #    Orlando Meeting, Experience Kissimmee, Visit St. Augustine,
+  #    Daytona Beach CVB / daytonabeach.com / daytona.events, City of
+  #    Sanford, Downtown Sanford Main Street, City of Kissimmee
+  #    (kissimmee.gov), Patch.com hyperlocal calendars (Orlando,
+  #    Sanford, etc.), Orlando Magazine arts season guide, Orlando
+  #    Theatre Review's theater directory, Gotta Go Orlando, Diocese of
+  #    St. Augustine): these mostly run Simpleview/CivicPlus/proprietary
+  #    CMSes with no REST API. Best path is `playwright_html` per site
+  #    once a real run identifies stable selectors - add entries here
+  #    one at a time as they're verified rather than guessing selectors
+  #    for a dozen sites at once.
+  #
+  #  - Comic/fandom convention aggregators (Comic-Cons.xyz,
+  #    Comiconomicon, Con Calendar): small low-traffic directory sites,
+  #    good `playwright_html` candidates but unverified - add once a
+  #    selector set is confirmed against the live page.
+  #
+  #  - Social-media-first discovery (Bungalower Instagram, Arts in
+  #    Orlando Instagram, "related accounts" graph traversal to find
+  #    more venue pages): Instagram has no practical public API for
+  #    this and aggressive bot detection. Out of scope; the
+  #    `facebook_events` scraper below covers the FB side for venues
+  #    with confirmed page slugs.
+  # --------------------------------------------------------------------
+
+  # --------------------------------------------------------------------
+  # Tier 4: Selective Facebook Events scraping for small bars/venues
+  # with no website calendar. Requires FACEBOOK_COOKIE - see
+  # scraper/sources/facebook_events.py for setup. The entries below have
+  # confirmed page slugs (Jun 2026 social-seed list) and are active; if
+  # FACEBOOK_COOKIE isn't set, all of them will surface the same
+  # `missing_credentials` diagnostic until the secret is added.
+  # --------------------------------------------------------------------
+  - slug: the-social-orlando-facebook
+    name: "The Social (Orlando) - Facebook Events"
+    source_type: social
+    scraper: facebook_events
+    default_category: music
+    config:
+      page_slug: "LiveAtTheSocial"
+      venue_name: "The Social"
+      city: Orlando
+      default_tags: [local, indie]
+
+  - slug: lil-indies-facebook
+    name: "Lil Indies (Mills 50) - Facebook Events"
+    source_type: social
+    scraper: facebook_events
+    default_category: music
+    config:
+      page_slug: "lilindiesorlando"
+      venue_name: "Lil Indies"
+      city: Orlando
+      default_tags: [local, indie]
+
+  - slug: dirty-laundry-facebook
+    name: "Dirty Laundry (Will's Pub complex) - Facebook Events"
+    source_type: social
+    scraper: facebook_events
+    default_category: music
+    config:
+      page_slug: "willsdirtylaundry"
+      venue_name: "Dirty Laundry"
+      city: Orlando
+      default_tags: [punk, metal, outdoor]
+
+  - slug: cafe-davinci-deland-facebook
+    name: "Cafe DaVinci (DeLand) - Facebook Events"
+    source_type: social
+    scraper: facebook_events
+    default_category: music
+    config:
+      page_slug: "CafeDaVinciDeland"
+      venue_name: "Cafe DaVinci"
+      city: DeLand
+      default_tags: [local]
+
+  - slug: pride-night-davinci-facebook
+    name: "Pride Night at DaVinci (DeLand) - Facebook Events"
+    source_type: social
+    scraper: facebook_events
+    default_category: nightlife_edm
+    allow_empty: true # recurring series - may not always have a future event posted
+    config:
+      page_slug: "PrideNightatDavinci"
+      venue_name: "Cafe DaVinci"
+      city: DeLand
+      default_tags: [drag]
+
+  - slug: example-bar-facebook
+    name: "Example Bar (Facebook Events template)"
+    source_type: social
+    scraper: facebook_events
+    is_active: false
+    default_category: music
+    config:
+      page_slug: "REPLACE_WITH_FACEBOOK_PAGE_USERNAME"
+      venue_name: "Example Bar"
+      city: "Orlando"
+    notes: >
+      Template/disabled. Duplicate this entry per small venue that only
+      posts events on Facebook, set config.page_slug to that page's
+      username, and set is_active: true once FACEBOOK_COOKIE is
+      configured and you've confirmed it returns real events.

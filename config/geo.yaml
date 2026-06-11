@@ -1,0 +1,80 @@
+# Geographic scope for the Central Florida event corridor.
+#
+# Used by scraper/geo.py to:
+#  - filter out events whose venue clearly falls outside the corridor
+#  - provide search center points / radii for radius-based APIs
+#    (e.g. Ticketmaster Discovery API)
+
+# Coarse bounding box. Anything outside this box is dropped during
+# normalization unless a venue/city override says otherwise.
+bounding_box:
+  min_lat: 27.85
+  max_lat: 30.05
+  min_lon: -81.75
+  max_lon: -80.55
+
+# Cities considered "in scope". Matched case-insensitively against the
+# venue/event city. This is used as a secondary check for events that
+# don't carry lat/lon (so the bounding box can't be applied) - if the
+# city matches one of these, the event is kept.
+cities:
+  - Orlando
+  - Winter Park
+  - Winter Garden
+  - Winter Springs
+  - Windermere
+  - Ocoee
+  - Apopka
+  - Maitland
+  - Eatonville
+  - Casselberry
+  - Altamonte Springs
+  - Longwood
+  - Lake Mary
+  - Sanford
+  - Oviedo
+  - Goldenrod
+  - Kissimmee
+  - St. Cloud
+  - Saint Cloud
+  - Celebration
+  - Lake Buena Vista
+  - Bay Lake
+  - Clermont
+  - Deltona
+  - DeBary
+  - Debary
+  - DeLand
+  - Deland
+  - Orange City
+  - Lake Helen
+  - Titusville
+  - Cocoa
+  - Cocoa Beach
+  - Merritt Island
+  - Rockledge
+  - Daytona Beach
+  - Daytona Beach Shores
+  - Port Orange
+  - Ormond Beach
+  - South Daytona
+  - New Smyrna Beach
+  - Edgewater
+  - Saint Augustine
+  - St. Augustine
+  - St Augustine
+  - Vilano Beach
+  - Palm Coast
+
+# Search center points used by radius-based APIs (e.g. Ticketmaster
+# Discovery API's `latlong` + `radius` params) to cover the whole
+# corridor with a small number of queries.
+search_centers:
+  - name: orlando_metro
+    lat: 28.5384
+    lon: -81.3789
+    radius_miles: 70
+  - name: st_augustine_daytona
+    lat: 29.8947
+    lon: -81.3145
+    radius_miles: 45
