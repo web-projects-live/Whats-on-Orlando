@@ -1,6 +1,6 @@
 name: Nightly event scrape
 
-on:
+"on":
   schedule:
     # 09:00 UTC = 4-5 AM US Eastern, depending on DST
     - cron: "0 9 * * *"
