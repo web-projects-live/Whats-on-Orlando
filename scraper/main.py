@@ -78,6 +78,13 @@ def run_source(client, cfg: dict[str, Any], source_row: dict[str, Any]) -> dict[
                         "If 0 is expected sometimes for this source, set `allow_empty: true`."
                     ),
                 )
+        except NoResultsError as exc:
+            if cfg.get("allow_empty", False):
+                pass  # expected; keep status="success"
+            else:
+                error_category = exc.category
+                error_message = exc.format()
+                status = "failed"
         except ScraperError as exc:
             error_category = exc.category
             error_message = exc.format()
