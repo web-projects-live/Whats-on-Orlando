@@ -390,6 +390,7 @@ sources:
       default_tags: [ucf]
 
   - slug: songkick-orlando
+    is_active: false  # Songkick no longer issues API keys
     name: "Songkick - Orlando Metro (supplemental concerts)"
     source_type: api
     scraper: songkick
