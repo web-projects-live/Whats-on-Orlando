@@ -466,6 +466,18 @@ sources:
   # FACEBOOK_COOKIE isn't set, all of them will surface the same
   # `missing_credentials` diagnostic until the secret is added.
   # --------------------------------------------------------------------
+
+  - slug: wills-pub-facebook
+    name: "Will's Pub (Orlando) - Facebook Events"
+    source_type: social
+    scraper: facebook_events
+    default_category: music
+    config:
+      page_slug: "willspub"
+      venue_name: "Will's Pub"
+      city: Orlando
+      default_tags: [local, indie]
+
   - slug: the-social-orlando-facebook
     name: "The Social (Orlando) - Facebook Events"
     source_type: social
