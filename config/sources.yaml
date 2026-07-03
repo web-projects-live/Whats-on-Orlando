@@ -60,6 +60,7 @@ sources:
   # `playwright_html` or `ics_calendar` for those.
   # --------------------------------------------------------------------
   - slug: wills-pub
+    is_active: false  # BROKEN: Cloudflare 403 blocks all requests
     name: "Will's Pub"
     source_type: api
     scraper: tribe_events
@@ -70,6 +71,7 @@ sources:
       default_tags: [indie, local]
 
   - slug: the-abbey-orlando
+    is_active: false  # BROKEN: DNS failure - domain unreachable
     name: "The Abbey"
     source_type: api
     scraper: tribe_events
@@ -80,6 +82,7 @@ sources:
       default_tags: [indie, local]
 
   - slug: conduit-fl
+    is_active: false  # BROKEN: tribe API 404 - plugin removed
     name: "Conduit"
     source_type: api
     scraper: tribe_events
@@ -90,6 +93,7 @@ sources:
       default_tags: [edm]
 
   - slug: orlando-shakes
+    is_active: false  # BROKEN: Cloudflare 403, ICS feed empty
     name: "Orlando Shakespeare Theater"
     source_type: api
     scraper: tribe_events
@@ -98,6 +102,7 @@ sources:
     default_category: theater
 
   - slug: garden-theatre
+    is_active: false  # BROKEN: domain squatted by unrelated med spa
     name: "Garden Theatre (Winter Garden)"
     source_type: api
     scraper: tribe_events
@@ -116,6 +121,7 @@ sources:
       default_tags: [kids_friendly, family_friendly]
 
   - slug: mad-cow-theatre
+    is_active: false  # BROKEN: domain hijacked by gambling site
     name: "Mad Cow Theatre"
     source_type: api
     scraper: tribe_events
@@ -124,6 +130,7 @@ sources:
     default_category: theater
 
   - slug: winter-park-playhouse
+    is_active: false  # BROKEN: tribe API 404 on both .com and .org
     name: "Winter Park Playhouse"
     source_type: api
     scraper: tribe_events
@@ -132,6 +139,7 @@ sources:
     default_category: theater
 
   - slug: st-augustine-amphitheatre
+    is_active: false  # BROKEN: tribe API 404
     name: "St. Augustine Amphitheatre"
     source_type: api
     scraper: tribe_events
@@ -142,15 +150,17 @@ sources:
   - slug: orlando-fringe
     name: "Orlando Fringe Festival"
     source_type: api
-    scraper: tribe_events
-    base_url: "https://orlandofringe.org"
-    homepage_url: "https://orlandofringe.org"
+    scraper: ics_calendar
+    base_url: "https://www.orlandofringe.org"
+    homepage_url: "https://www.orlandofringe.org"
     default_category: festival
     allow_empty: true # festival is seasonal - genuinely 0 most of the year
     config:
+      ics_url: "https://www.orlandofringe.org/?post_type=tribe_events&ical=1&eventDisplay=list"
       default_tags: [theater]
 
   - slug: enzian-theater
+    is_active: false  # BROKEN: returns HTML instead of JSON
     name: "Enzian Theater"
     source_type: api
     scraper: tribe_events
@@ -163,14 +173,16 @@ sources:
   - slug: timucua-arts
     name: "Timucua Arts Foundation"
     source_type: api
-    scraper: tribe_events
+    scraper: ics_calendar
     base_url: "https://timucua.com"
     homepage_url: "https://timucua.com"
     default_category: music
     config:
+      ics_url: "https://timucua.com/?post_type=tribe_events&ical=1&eventDisplay=list"
       default_tags: [jazz, intimate]
 
   - slug: plaza-live
+    is_active: false  # BROKEN: tribe API 404
     name: "The Plaza Live Orlando"
     source_type: api
     scraper: tribe_events
@@ -189,6 +201,7 @@ sources:
       default_tags: [kids_friendly, family_friendly]
 
   - slug: central-florida-fair
+    is_active: false  # BROKEN: tribe API 404
     name: "Central Florida Fairgrounds"
     source_type: api
     scraper: tribe_events
@@ -205,6 +218,7 @@ sources:
   # `playwright_html` for those instead.
   # --------------------------------------------------------------------
   - slug: bungalower
+    is_active: false  # BROKEN: tribe API 404
     name: "Bungalower (Orlando community calendar)"
     source_type: api
     scraper: tribe_events
@@ -214,6 +228,7 @@ sources:
     allow_empty: true
 
   - slug: west-end-trading-company
+    is_active: false  # BROKEN: returns HTML instead of JSON
     name: "West End Trading Company (Sanford)"
     source_type: api
     scraper: tribe_events
@@ -225,6 +240,7 @@ sources:
       default_tags: [local]
 
   - slug: my-central-florida-family
+    is_active: false  # BROKEN: Cloudflare 403
     name: "My Central Florida Family"
     source_type: api
     scraper: tribe_events
@@ -235,6 +251,7 @@ sources:
       default_tags: [kids_friendly, family_friendly]
 
   - slug: orlando-on-the-cheap
+    is_active: false  # BROKEN: tribe API 404
     name: "Orlando On The Cheap"
     source_type: api
     scraper: tribe_events
@@ -256,6 +273,7 @@ sources:
       default_tags: [comic_con]
 
   - slug: united-arts-cfl
+    is_active: false  # BROKEN: tribe API 404
     name: "United Arts of Central Florida (ArtsInOrlando)"
     source_type: api
     scraper: tribe_events
@@ -264,6 +282,7 @@ sources:
     default_category: arts_culture
 
   - slug: creative-city-project
+    is_active: false  # BROKEN: tribe API 404
     name: "Creative City Project"
     source_type: api
     scraper: tribe_events
@@ -284,14 +303,14 @@ sources:
     source_type: html
     scraper: playwright_html
     base_url: "https://www.drphillipscenter.org"
-    homepage_url: "https://www.drphillipscenter.org/events/"
+    homepage_url: "https://www.drphillipscenter.org/calendar"
     default_category: theater
     config:
-      list_url: "https://www.drphillipscenter.org/events/"
-      item_selector: "article"
-      title_selector: "h2, h3"
-      date_selector: "time, .date, .event-date"
-      link_selector: "a"
+      list_url: "https://www.drphillipscenter.org/calendar"
+      item_selector: ".eventCard"
+      title_selector: ".title, h3"
+      date_selector: ".top-date .start"
+      link_selector: "a.desc"
       image_selector: "img"
       venue_name: "Dr. Phillips Center for the Performing Arts"
       city: "Orlando"
@@ -300,6 +319,7 @@ sources:
       wait_ms: 3000
 
   - slug: orlando-museum-of-art
+    is_active: false  # BROKEN: exhibitions page - no timed events, selectors broken
     name: "Orlando Museum of Art"
     source_type: html
     scraper: playwright_html
@@ -356,6 +376,7 @@ sources:
       required.
 
   - slug: ucf-events
+    is_active: false  # BROKEN: Localist API endpoint gone (all /api/* paths 404)
     name: "UCF Events (Localist)"
     source_type: api
     scraper: localist
