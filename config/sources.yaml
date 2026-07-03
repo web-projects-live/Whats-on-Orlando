@@ -148,6 +148,7 @@ sources:
     default_category: music
 
   - slug: orlando-fringe
+    is_active: false  # BROKEN: ICS returns Cloudflare HTML challenge from GH Actions IPs
     name: "Orlando Fringe Festival"
     source_type: api
     scraper: ics_calendar
@@ -171,6 +172,7 @@ sources:
       default_tags: [film]
 
   - slug: timucua-arts
+    is_active: false  # BROKEN: ICS returns 403 from GH Actions IPs despite working in browser
     name: "Timucua Arts Foundation"
     source_type: api
     scraper: ics_calendar
