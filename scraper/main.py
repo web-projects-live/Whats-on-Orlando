@@ -173,7 +173,12 @@ def main() -> int:
 
     _print_summary(results)
 
-    failed = [r for r in results if r["status"] == "failed"]
+    # missing_credentials failures are expected until secrets are configured;
+    # only exit non-zero for actionable failures (broken URLs, selectors, etc.)
+    failed = [
+        r for r in results
+        if r["status"] == "failed" and r.get("error_category") != "missing_credentials"
+    ]
     return 1 if failed else 0
 
 
