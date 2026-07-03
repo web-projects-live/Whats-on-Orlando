@@ -472,6 +472,7 @@ sources:
     source_type: social
     scraper: facebook_events
     default_category: music
+    allow_empty: true  # FB pages may have no upcoming events
     config:
       page_slug: "willspub"
       venue_name: "Will's Pub"
@@ -483,6 +484,7 @@ sources:
     source_type: social
     scraper: facebook_events
     default_category: music
+    allow_empty: true  # FB pages may have no upcoming events
     config:
       page_slug: "LiveAtTheSocial"
       venue_name: "The Social"
@@ -494,6 +496,7 @@ sources:
     source_type: social
     scraper: facebook_events
     default_category: music
+    allow_empty: true  # FB pages may have no upcoming events
     config:
       page_slug: "lilindiesorlando"
       venue_name: "Lil Indies"
@@ -505,6 +508,7 @@ sources:
     source_type: social
     scraper: facebook_events
     default_category: music
+    allow_empty: true  # FB pages may have no upcoming events
     config:
       page_slug: "willsdirtylaundry"
       venue_name: "Dirty Laundry"
@@ -516,6 +520,7 @@ sources:
     source_type: social
     scraper: facebook_events
     default_category: music
+    allow_empty: true  # FB pages may have no upcoming events
     config:
       page_slug: "CafeDaVinciDeland"
       venue_name: "Cafe DaVinci"
