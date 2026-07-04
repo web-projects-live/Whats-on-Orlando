@@ -471,7 +471,7 @@ sources:
 
   # --------------------------------------------------------------------
   # Tier 3c: CivicEngage (CivicPlus) city government calendars.
-  # Server-rendered HTML with schema.org Event markup — no API key,
+  # Server-rendered HTML with schema.org Event markup  - no API key,
   # no Playwright needed. City calendars include fireworks shows,
   # festivals, civic events, recreation programs.
   # --------------------------------------------------------------------
