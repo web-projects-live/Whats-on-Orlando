@@ -52,6 +52,21 @@ sources:
       Nation-ticketed venues, so dedicated scrapers below focus on
       independent venues, theaters, museums, and family/festival sources.
 
+
+  - slug: eventbrite-central-florida
+    name: "Eventbrite - Central Florida (Community/Family/Holiday)"
+    source_type: api
+    scraper: eventbrite
+    homepage_url: "https://www.eventbrite.com"
+    default_category: community
+    is_active: false  # needs EVENTBRITE_API_KEY secret -- free at developer.eventbrite.com
+    allow_empty: true
+    notes: >
+      Requires EVENTBRITE_API_KEY (free, https://developer.eventbrite.com/).
+      Covers community events, family festivals, holiday/4th of July fireworks
+      shows, free civic events -- the gap not covered by Ticketmaster.
+      Get key, then add as GitHub secret EVENTBRITE_API_KEY and set is_active: true.
+
   # --------------------------------------------------------------------
   # Tier 2: Independent music venues / arts orgs - "The Events Calendar"
   # WordPress plugin REST API (scraper: tribe_events). One entry per
