@@ -1,8 +1,8 @@
-"""Registry mapping `scraper:` values in config/sources.yaml to their
-implementation classes."""
+"""Registry mapping `scraper:` values in config/sources.yaml to implementation classes."""
 
 from __future__ import annotations
 
+from scraper.sources.civicengage import CivicEngageScraper
 from scraper.sources.eventbrite import EventbriteScraper
 from scraper.sources.facebook_events import FacebookEventsScraper
 from scraper.sources.ics_calendar import IcsCalendarScraper
@@ -19,6 +19,7 @@ SCRAPER_REGISTRY = {
     "eventbrite": EventbriteScraper,
     "tribe_events": TribeEventsScraper,
     "ics_calendar": IcsCalendarScraper,
+    "civicengage": CivicEngageScraper,
     "playwright_html": PlaywrightHtmlScraper,
     "facebook_events": FacebookEventsScraper,
     "json_feed": JsonFeedScraper,
@@ -26,4 +27,3 @@ SCRAPER_REGISTRY = {
     "start_gg": StartggScraper,
     "songkick": SongkickScraper,
 }
-
