@@ -69,7 +69,17 @@ class TribeEventsScraper(BaseScraper):
                 )
 
             try:
-                data = resp.json()
+                # Some sites prepend garbage bytes (debug echo, BOM, etc.) before
+                # the JSON — strip everything up to the first { or [
+                raw = resp.text
+                first_brace = min(
+                    (raw.find(c) for c in ('{', '[') if raw.find(c) != -1),
+                    default=-1,
+                )
+                if first_brace > 0:
+                    raw = raw[first_brace:]
+                import json as _json
+                data = _json.loads(raw)
             except ValueError as exc:
                 raise ParseError(
                     f"{endpoint} did not return valid JSON.",
