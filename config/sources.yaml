@@ -308,6 +308,16 @@ sources:
     default_category: arts_culture
     allow_empty: true
 
+  - slug: cf-arts-foundation
+    name: "Cultural Foundation of Central Florida (cfcarts.com)"
+    source_type: api
+    scraper: tribe_events
+    base_url: "https://www.cfcarts.com"
+    homepage_url: "https://www.cfcarts.com/events/"
+    default_category: theater
+    config:
+      default_tags: [arts, theater, family_friendly]
+
   # --------------------------------------------------------------------
   # Tier 3: Major venues with no known JSON/ICS feed - headless-browser
   # scraping with CSS selectors. SELECTORS ARE BEST-GUESS PLACEHOLDERS
@@ -336,26 +346,14 @@ sources:
       wait_ms: 3000
 
   - slug: orlando-museum-of-art
-    is_active: false  # BROKEN: exhibitions page - no timed events, selectors broken
     name: "Orlando Museum of Art"
-    source_type: html
-    scraper: playwright_html
+    source_type: api
+    scraper: tribe_events
     base_url: "https://omart.org"
-    homepage_url: "https://omart.org/exhibitions/"
+    homepage_url: "https://omart.org/events/"
     default_category: arts_culture
     config:
-      list_url: "https://omart.org/exhibitions/"
-      item_selector: "article"
-      title_selector: "h2, h3"
-      date_selector: "time, .date"
-      link_selector: "a"
-      image_selector: "img"
-      default_tags: [art_exhibit]
-      venue_name: "Orlando Museum of Art"
-      city: "Orlando"
-      latitude: 28.5729
-      longitude: -81.3712
-      wait_ms: 3000
+      default_tags: [art, art_exhibit]
 
   # --------------------------------------------------------------------
   # Tier 3b: Special-purpose scrapers added for the Jun 2026 expansion
@@ -435,15 +433,13 @@ sources:
   #  - AXS-only venues (no public API; would need headless scraping of
   #    axs.com venue pages or a paid scraper API).
   #
-  #  - Eventbrite (organizer/category feeds for Orlando: master, this
-  #    week, live music, EDM, arts, kids/free), SeatGeek, CheapTickets,
-  #    StayHappening, AllEvents.in, EDMTrain, JamBase, Bandsintown,
-  #    Shazam event feeds, Trip.com, Tix4Cause, TicketSqueeze: none of
-  #    these expose a stable, key-free public API for arbitrary metro
-  #    searches. Eventbrite's public search API was deprecated; the
-  #    others either require paid/partner API access or change their
-  #    HTML/JSON shape often enough that a scraper would need constant
-  #    maintenance. Revisit if/when a maintained `playwright_html`
+  #  - Eventbrite: IMPLEMENTED (Jul 2026) as `eventbrite-central-florida`.
+  #    Requires free EVENTBRITE_API_KEY secret from developer.eventbrite.com.
+  #    SeatGeek, CheapTickets, StayHappening, AllEvents.in, EDMTrain,
+  #    JamBase, Bandsintown, Shazam event feeds, Trip.com, Tix4Cause,
+  #    TicketSqueeze: none expose a stable public API for metro searches.
+  #    Others require paid/partner access or change HTML/JSON shape often.
+  #    Revisit if/when a maintained `playwright_html`
   #    config proves stable for one of these.
   #
   #  - Tourism-board / city / .gov calendars that are NOT WordPress
