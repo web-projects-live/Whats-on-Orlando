@@ -470,6 +470,60 @@ sources:
   # --------------------------------------------------------------------
 
   # --------------------------------------------------------------------
+  # Tier 3c: CivicEngage (CivicPlus) city government calendars.
+  # Server-rendered HTML with schema.org Event markup — no API key,
+  # no Playwright needed. City calendars include fireworks shows,
+  # festivals, civic events, recreation programs.
+  # --------------------------------------------------------------------
+  - slug: altamonte-springs-city
+    name: "City of Altamonte Springs - City Calendar"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.altamonte.org"
+    homepage_url: "https://www.altamonte.org/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Altamonte Springs"
+      default_tags: [community, city_event]
+
+  - slug: winter-springs-city
+    name: "City of Winter Springs"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.winterspringsfl.org"
+    homepage_url: "https://www.winterspringsfl.org/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Winter Springs"
+      default_tags: [community, city_event]
+
+  - slug: casselberry-city
+    name: "City of Casselberry"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.casselberry.org"
+    homepage_url: "https://www.casselberry.org/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Casselberry"
+      default_tags: [community, city_event]
+
+  - slug: longwood-city
+    name: "City of Longwood"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.longwoodfl.org"
+    homepage_url: "https://www.longwoodfl.org/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Longwood"
+      default_tags: [community, city_event]
+
+  # --------------------------------------------------------------------
   # Tier 4: Selective Facebook Events scraping for small bars/venues
   # with no website calendar. Requires FACEBOOK_COOKIE - see
   # scraper/sources/facebook_events.py for setup. The entries below have
