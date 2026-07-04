@@ -72,7 +72,8 @@ class CivicEngageScraper(BaseScraper):
                 ) from exc
             raise ScraperError(f"HTTP {code} fetching {list_url}") from exc
 
-        html = resp.text
+        # CivicEngage pages often declare UTF-8 but serve Windows-1252 bytes
+        html = resp.content.decode("windows-1252", errors="replace")
 
         # Split into LI blocks that contain schema.org event markup
         li_blocks = re.split(r"<li\b[^>]*>", html, flags=re.IGNORECASE)
