@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from scraper.sources.civicengage import CivicEngageScraper
+from scraper.sources.mec_ajax import MecAjaxScraper
 from scraper.sources.eventbrite import EventbriteScraper
 from scraper.sources.facebook_events import FacebookEventsScraper
 from scraper.sources.ics_calendar import IcsCalendarScraper
@@ -20,6 +21,7 @@ SCRAPER_REGISTRY = {
     "tribe_events": TribeEventsScraper,
     "ics_calendar": IcsCalendarScraper,
     "civicengage": CivicEngageScraper,
+    "mec_ajax": MecAjaxScraper,
     "playwright_html": PlaywrightHtmlScraper,
     "facebook_events": FacebookEventsScraper,
     "json_feed": JsonFeedScraper,
