@@ -152,7 +152,7 @@ class MecAjaxScraper(BaseScraper):
 
                 extra_tags, cat_hint = classify_text(title, '')
                 category = cat_hint or default_category
-                tags = list(dict.fromkeys(default_tags + extra_tags))
+                tags = list(dict.fromkeys(default_tags + list(extra_tags)))
 
                 yield NormalizedEvent(
                     title=title,
