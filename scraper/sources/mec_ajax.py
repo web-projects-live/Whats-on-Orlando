@@ -158,11 +158,10 @@ class MecAjaxScraper(BaseScraper):
                     title=title,
                     start_datetime=start_dt,
                     venue_name=venue_name or city or None,
-                    address_raw=address or None,
+                    address=address or None,
                     event_url=href,
                     category=category,
                     tags=tags,
-                    source_slug=self.slug,
                 )
                 yielded += 1
 
