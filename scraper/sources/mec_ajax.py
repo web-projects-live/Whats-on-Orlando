@@ -69,7 +69,7 @@ class MecAjaxScraper(BaseScraper):
                 year += 1
 
             try:
-                resp = self.session.post(
+                resp = requests.post(
                     ajax_url,
                     data={'action': 'mec_list_load_more', 'year': year, 'month': month},
                     headers=DEFAULT_HEADERS,
