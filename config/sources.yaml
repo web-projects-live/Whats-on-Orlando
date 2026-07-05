@@ -523,6 +523,54 @@ sources:
       city: "Longwood"
       default_tags: [community, city_event]
 
+  - slug: lake-mary-city
+    name: "City of Lake Mary"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.lakemaryfl.com"
+    homepage_url: "https://www.lakemaryfl.com/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Lake Mary"
+      default_tags: [community, city_event]
+
+  - slug: debary-city
+    name: "City of DeBary"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.debary.org"
+    homepage_url: "https://www.debary.org/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "DeBary"
+      default_tags: [community, city_event]
+
+  - slug: deland-city
+    name: "City of DeLand"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.deland.org"
+    homepage_url: "https://www.deland.org/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "DeLand"
+      default_tags: [community, city_event]
+
+  - slug: deltona-city
+    name: "City of Deltona"
+    source_type: html
+    scraper: civicengage
+    base_url: "https://www.deltonafl.gov"
+    homepage_url: "https://www.deltonafl.gov/calendar.aspx"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Deltona"
+      default_tags: [community, city_event]
+
   # --------------------------------------------------------------------
   # Tier 4: Selective Facebook Events scraping for small bars/venues
   # with no website calendar. Requires FACEBOOK_COOKIE - see
