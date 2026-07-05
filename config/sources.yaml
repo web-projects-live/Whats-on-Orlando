@@ -571,6 +571,18 @@ sources:
       city: "Deltona"
       default_tags: [community, city_event]
 
+  - slug: sanford-city
+    name: "City of Sanford"
+    source_type: html
+    scraper: mec_ajax
+    base_url: "https://sanfordfl.gov"
+    homepage_url: "https://sanfordfl.gov/events/"
+    default_category: community
+    allow_empty: true
+    config:
+      city: "Sanford"
+      default_tags: [community, city_event]
+
   # --------------------------------------------------------------------
   # Tier 4: Selective Facebook Events scraping for small bars/venues
   # with no website calendar. Requires FACEBOOK_COOKIE - see
