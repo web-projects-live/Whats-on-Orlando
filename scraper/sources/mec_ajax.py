@@ -48,7 +48,7 @@ def _clean(html: str) -> str:
 class MecAjaxScraper(BaseScraper):
     """Scrapes Modern Events Calendar via the mec_list_load_more AJAX action."""
 
-    def scrape(self) -> Iterator[NormalizedEvent]:
+    def fetch_events(self) -> Iterator[NormalizedEvent]:
         base_url = self.base_url.rstrip('/')
         ajax_url = f"{base_url}/wp-admin/admin-ajax.php"
         cfg = self.config or {}
