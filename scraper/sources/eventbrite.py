@@ -74,7 +74,7 @@ class EventbriteScraper(BaseScraper):
 
         seen_ids: set[str] = set()
 
-        for center in search_centers:
+        for center in search_centers():
             lat = center["lat"]
             lon = center["lon"]
             radius = center["radius_miles"]
