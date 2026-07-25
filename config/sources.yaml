@@ -326,6 +326,7 @@ sources:
   # `config.*_selector` values below.
   # --------------------------------------------------------------------
   - slug: dr-phillips-center
+    is_active: false  # BROKEN: selector '.eventCard' no longer matches - page structure changed
     name: "Dr. Phillips Center for the Performing Arts"
     source_type: html
     scraper: playwright_html
@@ -512,6 +513,7 @@ sources:
       default_tags: [community, city_event]
 
   - slug: longwood-city
+    is_active: false  # BROKEN: read timeout on www.longwoodfl.org - server may be slow or unreachable
     name: "City of Longwood"
     source_type: html
     scraper: civicengage
