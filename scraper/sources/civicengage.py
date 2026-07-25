@@ -54,9 +54,10 @@ class CivicEngageScraper(BaseScraper):
         list_url = cfg.get("list_url") or f"{self.base_url}/calendar.aspx?view=list&category=0"
         default_city = cfg.get("city", "")
         default_tags = set(cfg.get("default_tags", []))
+        timeout = cfg.get("timeout", 30)  # configurable timeout, default 30s
 
         try:
-            resp = requests.get(list_url, headers=DEFAULT_HEADERS, timeout=20)
+            resp = requests.get(list_url, headers=DEFAULT_HEADERS, timeout=timeout)
             resp.raise_for_status()
         except requests.HTTPError as exc:
             code = exc.response.status_code if exc.response is not None else 0

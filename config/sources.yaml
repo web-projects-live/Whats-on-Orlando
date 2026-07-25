@@ -326,25 +326,25 @@ sources:
   # `config.*_selector` values below.
   # --------------------------------------------------------------------
   - slug: dr-phillips-center
-    is_active: false  # BROKEN: selector '.eventCard' no longer matches - page structure changed
     name: "Dr. Phillips Center for the Performing Arts"
     source_type: html
     scraper: playwright_html
     base_url: "https://www.drphillipscenter.org"
     homepage_url: "https://www.drphillipscenter.org/calendar"
     default_category: theater
+    allow_empty: true  # seasonal venue - may have gaps between shows
     config:
       list_url: "https://www.drphillipscenter.org/calendar"
-      item_selector: ".eventCard"
-      title_selector: ".title, h3"
-      date_selector: ".top-date .start"
-      link_selector: "a.desc"
+      item_selector: "[data-event], .event, .event-card, .event-item, .show, .performance"
+      title_selector: ".title, h3, h2, .event-title, [data-event-title]"
+      date_selector: ".date, .event-date, .top-date, .start, [data-event-date]"
+      link_selector: "a.desc, a[href*=event], a[href*=show], .event-link"
       image_selector: "img"
       venue_name: "Dr. Phillips Center for the Performing Arts"
       city: "Orlando"
       latitude: 28.5398
       longitude: -81.3756
-      wait_ms: 3000
+      wait_ms: 5000
 
   - slug: orlando-museum-of-art
     name: "Orlando Museum of Art"
@@ -513,7 +513,6 @@ sources:
       default_tags: [community, city_event]
 
   - slug: longwood-city
-    is_active: false  # BROKEN: read timeout on www.longwoodfl.org - server may be slow or unreachable
     name: "City of Longwood"
     source_type: html
     scraper: civicengage
@@ -524,6 +523,7 @@ sources:
     config:
       city: "Longwood"
       default_tags: [community, city_event]
+      timeout: 45  # server is slow, increased from default 30s
 
   - slug: lake-mary-city
     name: "City of Lake Mary"
